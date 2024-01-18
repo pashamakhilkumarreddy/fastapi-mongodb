@@ -1,0 +1,36 @@
+fail_fast: true
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+    -   id: check-yaml
+        files: \.py$
+    -   id: end-of-file-fixer
+        files: \.py$
+    -   id: trailing-whitespace
+        files: \.py$
+-   repo: local
+    hooks:
+    # - id: isort
+    #   name: isort
+    #   entry: poetry run isort
+    #   language: system
+    #   types: [file, python]
+    #   files: \.py$
+    - id: blue
+      name: blue
+      entry: poetry run blue .
+      language: system
+      types: [file, python]
+      files: \.py$
+    # - id: pip-audit
+    #   name: pip-audit
+    #   entry: poetry run pip-audit -r requirements.txt
+    #   language: system
+    #   types: [file, python]
+    # - id: pytest
+    #   name: pytest
+    #   entry: poetry run pytest
+    #   language: system
+    #   types: [file, python]
+    #   pass_filenames: false
