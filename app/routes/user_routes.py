@@ -41,7 +41,7 @@ async def upload_user_image(id: str, file: UploadFile = File(...)):
     return get_response(done, error_message='An error occurred uploading user image')
 
 
-@user_routes.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=['users'])
+@user_routes.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user(id):
     await result_verification(id)
     done: bool = await service.delete_user(id)

@@ -1,0 +1,72 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: api
+    env_file:
+      - .env
+    networks:
+      - app-network
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      - ENV=production
+      - PORT=${PORT}
+      - APP_NAME=${APP_NAME}
+      - MONGO_URL=${MONGO_URL}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: on-failure
+
+  db:
+    container_name: mongo_db
+    image: mongo
+    env_file:
+      - .env
+    networks:
+      - app-network
+    volumes:
+      - ./mongodata:/data/db 
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DATABASE_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DATABASE_PASSWORD}
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    healthcheck:
+      test: ["CMD-SHELL", "mongo --eval 'db.runCommand({ ping: 1 })'"]
+      interval: 1s
+      timeout: 5s
+      retries: 6
+    restart: always
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    depends_on:
+      - api
+    ports:
+      - 80:80
+    networks:
+      - app-network
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: always
+
+networks:
+  app-network: {}
+
+volumes:
+  mongodata:
+    driver: local

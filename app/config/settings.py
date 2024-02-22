@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     port: int
     app_name: str = 'FastAPI MongoDB Server'
     mongo_url: str
+    database_user: str = ''
+    database_password: str = ''
 
     class Config:
         env_prefix = ''
