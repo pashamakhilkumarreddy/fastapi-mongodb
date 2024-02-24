@@ -1,0 +1,48 @@
+name: Code
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+concurrency:
+  group: code
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      ENV: ${{ secrets.ENV }}
+      PORT: ${{ secrets.PORT }}
+      APP_NAME: ${{ secrets.APP_NAME }}
+      MONGO_URL: ${{ secrets.MONGO_URL }}
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.12"
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        poetry --version
+
+    - name: Install dependencies
+      run: |
+        poetry install
+
+    - name: Lint with blue
+      run: |
+        poetry run blue . --check --quiet
+
+    - name: Test with pytest
+      run: |
+        poetry run pytest
