@@ -15,7 +15,6 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     env:
       ENV: ${{ secrets.ENV }}
@@ -23,7 +22,8 @@ jobs:
       APP_NAME: ${{ secrets.APP_NAME }}
       MONGO_URL: ${{ secrets.MONGO_URL }}
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
     - name: Set up Python 3.12
       uses: actions/setup-python@v3
@@ -38,6 +38,13 @@ jobs:
     - name: Install dependencies
       run: |
         poetry install
+
+    - name: Create .env file
+      run: |
+        echo "ENV=${ENV}" >> .env
+        echo "PORT=${PORT}" >> .env
+        echo "MONGO_URL=${MONGO_URL}" >> .env
+        echo "MONGO_URL=${MONGO_URL}" >> .env
 
     - name: Lint with blue
       run: |
