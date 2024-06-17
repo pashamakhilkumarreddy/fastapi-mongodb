@@ -63,6 +63,7 @@ htmlcov/
 
 *.yml
 *.yaml
+.secrets.baseline
 .git/
 .github/
 .editorconfig

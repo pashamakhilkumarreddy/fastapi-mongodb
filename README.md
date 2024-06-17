@@ -90,7 +90,7 @@ Follow these steps to set up and run the application:
 7. **Run the application:**
 
    ```bash
-   uvicorn main:app --reload
+   uvicorn app.main:app --reload
    ```
 
 8. For additional details, please refer to the [Makefile](Makefile) for this project. It includes various commands to manage the setup, running, and maintenance of the application.
@@ -177,6 +177,7 @@ Access the Swagger UI at [Swagger API Docs](http://localhost:8000/api-docs).
 ├── .env
 ├── .env.example
 ├── .pre-commit-config.yaml
+├── .secrets.baseline
 ├── CONTRIBUTING.md
 ├── docker-compose.yml
 ├── Dockerfile
